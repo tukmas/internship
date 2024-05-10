@@ -19,6 +19,26 @@ public class City {
         this.foundation = foundation;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public long getPopulation() {
+        return population;
+    }
+
+    public int getFoundation() {
+        return foundation;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
