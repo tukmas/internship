@@ -7,16 +7,36 @@ public class City {
     private String name;
     private String region;
     private String district;
-    private long population;
+    private int population;
     private int foundation;
 
-    public City(long id, String name, String region, String district, long population, int foundation) {
+    public City(long id, String name, String region, String district, int population, int foundation) {
         this.id = id;
         this.name = name;
         this.region = region;
         this.district = district;
         this.population = population;
         this.foundation = foundation;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public int getPopulation() {
+        return population;
+    }
+
+    public int getFoundation() {
+        return foundation;
     }
 
     @Override

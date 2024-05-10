@@ -4,46 +4,58 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
         File filePath = new File("C:\\Users\\Sergey\\Downloads\\Задача ВС Java Сбер.csv");
 
+        List<City> cities = readCityData(filePath);
+
+        int maxPopulation = 0;
+        int maxPopulationIndex = -1;
+
+        for (int i = 0; i < cities.size(); i++) {
+            City city = cities.get(i);
+            if (city.getPopulation() > maxPopulation) {
+                maxPopulation = city.getPopulation();
+                maxPopulationIndex = i;
+            }
+        }
+
+        System.out.println("[" + maxPopulationIndex + "] = " + maxPopulation);
+    }
+
+    private static List<City> readCityData(File filePath) {
         List<City> cities = new ArrayList<>();
 
-            try {
-                File file = new File(String.valueOf(filePath));
-                Scanner scanner = new Scanner(file);
+        try {
+            File file = new File(String.valueOf(filePath));
+            Scanner scanner = new Scanner(file);
 
-                while (scanner.hasNextLine()) {
-                    String line = scanner.nextLine();
-                    String[] cityData = line.split(";");
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String[] cityData = line.split(";");
 
-                    if (cityData.length == 6) {
-                        int id = Integer.parseInt(cityData[0]);
-                        String name = cityData[1];
-                        String region = cityData[2];
-                        String district = cityData[3];
-                        int population = Integer.parseInt(cityData[4]);
-                        int foundationYear = parseFoundationYear(cityData[5]);
-
-                        City city = new City(id,name, region, district, population, foundationYear);
-                        System.out.println(city);
-                        id++;
-                    }
+                if (cityData.length == 6) {
+                    int id = Integer.parseInt(cityData[0]);
+                    String name = cityData[1];
+                    String region = cityData[2];
+                    String district = cityData[3];
+                    int population = Integer.parseInt(cityData[4]);
+                    int foundationYear = parseFoundationYear(cityData[5]);
+                    City city = new City(id, name, region, district, population, foundationYear);
+                    cities.add(city);
+                    id++;
                 }
+            }
 
-                scanner.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+            scanner.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
-        for (City city : cities) {
-            System.out.println(city);
-        }
+
+        return cities;
     }
     private static int parseFoundationYear(String yearString) {
         int foundationYear = 0;
