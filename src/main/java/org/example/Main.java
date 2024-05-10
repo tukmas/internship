@@ -10,6 +10,23 @@ public class Main {
     public static void main(String[] args) {
         File filePath = new File("C:\\Users\\Sergey\\Downloads\\Задача ВС Java Сбер.csv");
 
+        List<City> cities = readCityData(filePath);
+
+        int maxPopulation = 0;
+        int maxPopulationIndex = -1;
+
+        for (int i = 0; i < cities.size(); i++) {
+            City city = cities.get(i);
+            if (city.getPopulation() > maxPopulation) {
+                maxPopulation = city.getPopulation();
+                maxPopulationIndex = i;
+            }
+        }
+
+        System.out.println("[" + maxPopulationIndex + "] = " + maxPopulation);
+    }
+
+    private static List<City> readCityData(File filePath) {
         List<City> cities = new ArrayList<>();
 
         try {
@@ -27,7 +44,7 @@ public class Main {
                     String district = cityData[3];
                     int population = Integer.parseInt(cityData[4]);
                     int foundationYear = parseFoundationYear(cityData[5]);
-                    City city = new City(id,name, region, district, population, foundationYear);
+                    City city = new City(id, name, region, district, population, foundationYear);
                     cities.add(city);
                     id++;
                 }
@@ -38,23 +55,7 @@ public class Main {
             e.printStackTrace();
         }
 
-//        Сортировка списка городов по федеральному округу и наименованию города внутри каждого федерального округа в алфавитном порядке по убыванию с учетом регистра;
-        Comparator<City> comparator = Comparator.comparing(City::getDistrict)
-                .thenComparing(City::getName);
-        cities.sort(comparator);
-
-        for (City city : cities) {
-            System.out.println(city);
-        }
-
-// Сортировка списка городов по наименованию в алфавитном порядке по убыванию без учета регистра;
-//        Collections.sort(cities, (city1, city2) ->
-//                city1.getName().compareToIgnoreCase(city2.getName()));
-//
-//        for (City city : cities) {
-//            System.out.println(city);
-//        }
-
+        return cities;
     }
     private static int parseFoundationYear(String yearString) {
         int foundationYear = 0;
