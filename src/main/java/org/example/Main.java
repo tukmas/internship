@@ -12,18 +12,11 @@ public class Main {
 
         List<City> cities = readCityData(filePath);
 
-        int maxPopulation = 0;
-        int maxPopulationIndex = -1;
+        Map<String, Integer> regionCityCount = countCitiesInRegions(cities);
 
-        for (int i = 0; i < cities.size(); i++) {
-            City city = cities.get(i);
-            if (city.getPopulation() > maxPopulation) {
-                maxPopulation = city.getPopulation();
-                maxPopulationIndex = i;
-            }
+        for (Map.Entry<String, Integer> entry : regionCityCount.entrySet()) {
+            System.out.println(entry.getKey() + " - " + entry.getValue());
         }
-
-        System.out.println("[" + maxPopulationIndex + "] = " + maxPopulation);
     }
 
     private static List<City> readCityData(File filePath) {
@@ -47,6 +40,16 @@ public class Main {
                     City city = new City(id, name, region, district, population, foundationYear);
                     cities.add(city);
                     id++;
+                } else if (cityData.length == 5) {
+                    int id = Integer.parseInt(cityData[0]);
+                    String name = cityData[1];
+                    String region = cityData[2];
+                    String district = cityData[3];
+                    int population = Integer.parseInt(cityData[4]);
+                    int foundationYear = 0;
+                    City city = new City(id, name, region, district, population, foundationYear);
+                    cities.add(city);
+                    id++;
                 }
             }
 
@@ -56,6 +59,21 @@ public class Main {
         }
 
         return cities;
+    }
+    private static Map<String, Integer> countCitiesInRegions(List<City> cities) {
+        Map<String, Integer> regionCityCount = new HashMap<>();
+
+        for (City city : cities) {
+            String region = city.getRegion();
+            if (regionCityCount.containsKey(region)) {
+                int count = regionCityCount.get(region);
+                regionCityCount.put(region, count + 1);
+            } else {
+                regionCityCount.put(region, 1);
+            }
+        }
+
+        return regionCityCount;
     }
     private static int parseFoundationYear(String yearString) {
         int foundationYear = 0;
